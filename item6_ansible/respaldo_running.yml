@@ -1,0 +1,16 @@
+---
+- name: Respaldo running-config
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Ejecutar show running-config
+      ios_command:
+        commands:
+          - show running-config
+      register: salida
+
+    - name: Guardar respaldo
+      copy:
+        content: "{{ salida.stdout[0] }}"
+        dest: "./respaldo_running_config.txt"
